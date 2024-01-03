@@ -1,5 +1,7 @@
 locals {
   paths = concat(var.root ? [] : [var.name], var.extra_paths)
+  # if var.existing then pull secret from existing secret if not then "${var.name}-pull-secret"
+  pull_secret_name = var.existing ? var.secret : "${var.name}-pull-secret"
 }
 
 resource "kubernetes_manifest" "pull_secret" {
@@ -53,7 +55,7 @@ resource "kubernetes_manifest" "gr-cert-manager" {
           "clusterGroup" = var.name
         }
       ]
-    }, var.private ? {"clientSecretName" = "${var.name}-pull-secret"}: {})
+    }, var.private ? {"clientSecretName" = "${local.pull_secret_name}"}: {})
   }
 }
 

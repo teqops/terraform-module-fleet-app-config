@@ -20,11 +20,19 @@ variable "private" {
   default = false
 }
 
+variable "existing" {
+  default = false
+}
+
 variable "ssh" {
   default = false
 }
 
 variable "ssh_key" {
+  default = ""
+}
+
+variable "secret" {
   default = ""
 }
 
