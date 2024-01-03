@@ -3,7 +3,7 @@ locals {
 }
 
 resource "kubernetes_manifest" "pull_secret" {
-  count = var.private ? 1 : 0
+  count = var.private && !var.ssh ? 1 : 0
   manifest = {
     "apiVersion" = "v1"
     "kind"       = "Secret"
@@ -15,6 +15,23 @@ resource "kubernetes_manifest" "pull_secret" {
     "data" = {
       "password" = base64encode(var.git_password)
       "username" = base64encode(var.git_username)
+    }
+  }
+}
+
+
+resource "kubernetes_manifest" "pull_secret_ssh" {
+  count = var.private && var.ssh ? 1 : 0
+  manifest = {
+    "apiVersion" = "v1"
+    "kind"       = "Secret"
+    "type"       = "kubernetes.io/basic-auth"
+    "metadata" = {
+      "name"      = "${var.name}-pull-secret"
+      "namespace" = "fleet-default"
+    }
+    "data" = {
+      "ssh-privatekey" = base64encode(var.ssh_key)
     }
   }
 }

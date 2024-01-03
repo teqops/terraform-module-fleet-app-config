@@ -20,6 +20,14 @@ variable "private" {
   default = false
 }
 
+variable "ssh" {
+  default = false
+}
+
+variable "ssh_key" {
+  default = ""
+}
+
 variable "git_password" {
   default = ""
 }
