@@ -5,7 +5,7 @@ locals {
 }
 
 resource "kubernetes_manifest" "pull_secret" {
-  count = var.private && !var.ssh ? 1 : 0
+  count = var.private && !var.ssh && !var.existing ? 1 : 0
   manifest = {
     "apiVersion" = "v1"
     "kind"       = "Secret"
